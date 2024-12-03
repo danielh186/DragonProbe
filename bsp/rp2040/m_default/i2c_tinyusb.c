@@ -163,7 +163,7 @@ inline static void i2cex_abort_xfer(i2c_inst_t* i2c) {
     // wait for M_TX_ABRT irq
     do {
         /*if (timeout_check) {
-                timeout = timeout_check(ts);
+                timeout = timeout_check(ts, until);
                 abort |= timeout;
         }*/
         tight_loop_contents();
@@ -214,7 +214,7 @@ static int i2cex_write_blocking_until(i2c_inst_t* i2c, uint16_t addr, bool a10bi
 
         do {
             if (timeout_check) {
-                timeout = timeout_check(ts);
+                timeout = timeout_check(ts, until);
                 abort |= timeout;
             }
             tight_loop_contents();
@@ -230,7 +230,7 @@ static int i2cex_write_blocking_until(i2c_inst_t* i2c, uint16_t addr, bool a10bi
             if (abort || (last && !nostop)) {
                 do {
                     if (timeout_check) {
-                        timeout = timeout_check(ts);
+                        timeout = timeout_check(ts, until);
                         abort |= timeout;
                     }
                     tight_loop_contents();
@@ -309,7 +309,7 @@ static int i2cex_read_blocking_until(i2c_inst_t* i2c, uint16_t addr, bool a10bit
             tight_loop_contents();
             // ?
             if (timeout_check) {
-                timeout = timeout_check(ts);
+                timeout = timeout_check(ts, until);
                 abort |= timeout;
             }
         }
@@ -331,7 +331,7 @@ static int i2cex_read_blocking_until(i2c_inst_t* i2c, uint16_t addr, bool a10bit
             abort        = (bool)i2c->hw->clr_tx_abrt;
 
             if (timeout_check) {
-                timeout = timeout_check(ts);
+                timeout = timeout_check(ts, until);
                 abort |= timeout;
             }
             tight_loop_contents();  // ?
